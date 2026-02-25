@@ -1,0 +1,33 @@
+// vamos a trabajar con estruptura MVC, elegimos esta por la facilidad y escalavilidad de poder tener todo los codigo y contenido organisado
+// y poder expandir a medidad el proyecto avance. 
+/proyecto-isw306
+│
+│   estruptura.txt
+│   index.php
+│   
+├───assets
+│   ├───css
+│   │       styles.css
+│   │       
+│   └───img
+│           logo.png
+│
+└───views
+    ├───errors
+    │       404.php
+    │       
+    ├───home
+    │       home.php
+    │       
+    ├───layouts
+    │       footer.php
+    │       header.php
+    │       
+    ├───login
+    │       login.php
+    │       register.php
+    │       
+    └───nosotros
+            index.php
+
+PS C:\xampp\htdocs\api_educativa> 
