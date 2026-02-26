@@ -134,9 +134,10 @@ Tablets
 Dispositivos móviles
 
 ---
+
 ## Vista del proyecto
 
-![Vista del proyecto](vista%20del%20proyecto.jpeg)
+![Vista del proyecto](vista_proyecto.jpeg)
 
 
 ## Estado Actual
@@ -210,6 +211,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
