@@ -134,13 +134,6 @@ Tablets
 Dispositivos móviles
 
 ---
-
-## Vista del proyecto
-
-![Vista del proyecto](vista_proyecto.jpeg)
-
-
-
 ## Estado Actual
 
 Etapa 1 completada.
@@ -212,6 +205,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
