@@ -155,16 +155,16 @@ git clone https://github.com/usuario/centro-educativo-digital.git
 
 2. Colocar el proyecto en el servidor local
 
-Ejemplo:
+Ejemplo:xampp
 
 ```
-htdocs/
+htdocs/carpeta del proyecto
 ```
 
 3. Ejecutar en el navegador
 
 ```
-http://localhost/centro-educativo-digital
+http://localhost/api_educativa
 ```
 
 ---
@@ -179,12 +179,6 @@ Implementación de PHP y MySQL
 
 Etapa 4
 Despliegue en servidor web
-
----
-
-## Recursos del Proyecto
-
-https://drive.google.com/file/d/1QhaKDKJMJatGuDzxnzpj-uHIqd_jtBi1/view
 
 ---
 
@@ -206,6 +200,7 @@ Pedro Starlin Ureña Cruz
 
 ## Estado del Proyecto
 
-En desarrollo
+En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
