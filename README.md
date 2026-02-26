@@ -9,7 +9,9 @@
 **Universidad:** Universidad Abierta Para Adultos (UAPA)
 ---
 **Asignatura:** Desarrollo de Aplicaciones Web ISW-306
+---
 **Profesor:** Marco Rodríguez
+--
 **Unidad:** III
 **Grupo:** 03
 **Fecha:** 24/02/2026
@@ -204,5 +206,6 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
