@@ -1,102 +1,25 @@
 
-###############################################################################
-# GitHub Linguist configuration for api_educativa-306
-# Objetivos:
-#  - Mostrar HTML (contenido de vistas) en la barra de lenguajes
-#  - Evitar inflar estadísticas con dependencias/terceros (vendor, libs)
-#  - Reducir "Hack" si no es intencional
-###############################################################################
+# Contar vistas PHP como HTML
+views/**/*.php linguist-language=HTML
 
-# -----------------------------------------------------------------------------
-# 1) Dependencias y librerías de terceros (no deben contar)
-#    - 'linguist-vendored' las excluye del cómputo de lenguajes.
-#    - Ajusta o añade rutas si usas otras carpetas de terceros.
-# -----------------------------------------------------------------------------
-vendor/**                 linguist-vendored
-public/vendor/**          linguist-vendored
-public/libs/**            linguist-vendored
-public/lib/**             linguist-vendored
-public/assets/vendor/**   linguist-vendored
-node_modules/**           linguist-vendored
-bower_components/**       linguist-vendored
+# Excluir assets del conteo
+assets/css/** linguist-vendored
+assets/img/** linguist-vendored
 
-# -----------------------------------------------------------------------------
-# 2) Forzar que VISTAS .php cuenten como HTML
-#    - Así GitHub reflejará el HTML de tus views (aunque contengan PHP).
-#    - Ajusta rutas si tienes más carpetas de vistas/plantillas.
-# -----------------------------------------------------------------------------
-views/**/*.php            linguist-language=HTML
-resources/views/**/*.php  linguist-language=HTML
-templates/**/*.php        linguist-language=HTML
+# Ignorar dependencias externas
+vendor/** linguist-vendored
+public/vendor/** linguist-vendored
 
-# -----------------------------------------------------------------------------
-# 3) "Hack" → forzar a PHP (opcional)
-#    - Si NO usas Hack realmente, y solo hay archivos heredados o de terceros,
-#      podemos mapearlos a PHP para que no aparezcan como "Hack".
-#    - Si sí usas Hack, elimina estas líneas.
-# -----------------------------------------------------------------------------
-*.hack                     linguist-language=PHP
-*.hh                       linguist-language=PHP
+# Evitar que aparezca Hack como lenguaje
+*.hack linguist-language=PHP
+*.hh   linguist-language=PHP
 
-# -----------------------------------------------------------------------------
-# 4) Archivos generados/bundles/minificados (no aportan al lenguaje fuente)
-#    - Los marcamos como vendored para no sesgar el conteo.
-# -----------------------------------------------------------------------------
-public/dist/**             linguist-vendored
-public/build/**            linguist-vendored
-public/bundle/**           linguist-vendored
-public/*.min.js            linguist-vendored
-public/**/*.min.js         linguist-vendored
-public/*.min.css           linguist-vendored
-public/**/*.min.css        linguist-vendored
-*.min.js                   linguist-vendored
-*.min.css                  linguist-vendored
-
-# -----------------------------------------------------------------------------
-# 5) Documentación, configs y datos (no cuentan como lenguaje de programación)
-# -----------------------------------------------------------------------------
-docs/**                    linguist-vendored
-*.md                       linguist-documentation
-LICENSE*                   linguist-documentation
-*.json                     linguist-vendored
-*.yml                      linguist-vendored
-*.yaml                     linguist-vendored
-*.lock                     linguist-vendored
-*.sql                      linguist-vendored
-
-# -----------------------------------------------------------------------------
-# 6) Tests, coverage, outputs temporales
-# -----------------------------------------------------------------------------
-tests/**                   linguist-vendored
-test/**                    linguist-vendored
-spec/**                    linguist-vendored
-coverage/**                linguist-vendored
-.tmp/**                    linguist-vendored
-temp/**                    linguist-vendored
-tmp/**                     linguist-vendored
-
-# -----------------------------------------------------------------------------
-# 7) Imágenes y fuentes (no aportan al lenguaje de programación)
-# -----------------------------------------------------------------------------
-public/images/**           linguist-vendored
-public/img/**              linguist-vendored
-public/fonts/**            linguist-vendored
-assets/images/**           linguist-vendored
-assets/fonts/**            linguist-vendored
-*.png                      linguist-vendored
-*.jpg                      linguist-vendored
-*.jpeg                     linguist-vendored
-*.gif                      linguist-vendored
-*.svg                      linguist-vendored
-*.webp                     linguist-vendored
-*.ico                      linguist-vendored
-*.ttf                      linguist-vendored
-*.woff                     linguist-vendored
-*.woff2                    linguist-vendored
-
-# -----------------------------------------------------------------------------
-# 8) Si alguna carpeta completa no debe entrar al cálculo:
-#    (usa esto con cuidado; los archivos no contarán para el idioma)
-# -----------------------------------------------------------------------------
-# examples/**               linguist-detectable=false
-# experimental/**           linguist-detectable=false
+# Excluir archivos minificados y builds
+*.min.js linguist-vendored
+*.min.css linguist-vendored
+public/**/*.min.js linguist-vendored
+public/**/*.min.css linguist-vendored
+public/dist/** linguist-vendored
+public/build/** linguist-vendored
+public/bundle/** linguist-vendored
+```
