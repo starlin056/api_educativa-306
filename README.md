@@ -61,12 +61,12 @@ Desarrollar la estructura base de la aplicación web mediante una interfaz visua
 * **Estructura MVC inicial:** organización del proyecto en controladores, vistas, layouts y base para modelos.
 * **Ruteo básico:** `index.php` como punto de entrada para gestionar la carga y navegación entre vistas.
 * **Vistas iniciales:** `home`, `login`, `register` y `nosotros`, construidas con HTML5 semántico.
-**Diseño responsive:** uso de CSS3, Flexbox y Media Queries para una interfaz adaptable a múltiples dispositivos.
-**Configuración del sistema:** archivos de configuración base (entorno, constantes, rutas) y gestión inicial de sesiones.
-**Seguridad de credenciales:** implementación de hash de contraseñas (p. ej., `password_hash`/`password_verify`) como preparación para la autenticación.
-**Flujo de autenticación y roles preparado:** lógica inicial para inicio de sesión y redirección por rol hacia los dashboards correspondientes (Administrador, Profesor, Estudiante).
-**Base de datos:** diseño del esquema SQL inicial para su integración en la siguiente etapa.
-**Dashboards:** correspondientes (Administrador) funcionar donde se podran administrar todos los usuarios y servicios ofrecido siendo este el usuario Root del sistema.
+* **Diseño responsive:** uso de CSS3, Flexbox y Media Queries para una interfaz adaptable a múltiples dispositivos.
+* **Configuración del sistema:** archivos de configuración base (entorno, constantes, rutas) y gestión inicial de sesiones.
+* **Seguridad de credenciales:** implementación de hash de contraseñas (p. ej., `password_hash`/`password_verify`) como preparación para la autenticación.
+* **Flujo de autenticación y roles preparado:** lógica inicial para inicio de sesión y redirección por rol hacia los dashboards correspondientes (Administrador, Profesor, Estudiante).
+* **Base de datos:** diseño del esquema SQL inicial para su integración en la siguiente etapa.
+* **Dashboards:** correspondientes (Administrador) funcionar donde se podran administrar todos los usuarios y servicios ofrecido siendo este el usuario Root del sistema.
 
 
 ---
@@ -221,6 +221,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
