@@ -204,9 +204,9 @@ Despliegue en servidor web
 
 ## 🖼️ Vista Previa
 
-<p align="center">
-  https://github.com/starlin056/api_educativa-306/blob/main/IMAGEN.jpeg?raw=true
-</p>
+## 🖼️ Vista Previa
+
+![Vista Previa delSistema
 
 ---
 
@@ -231,6 +231,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
