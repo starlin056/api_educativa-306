@@ -18,7 +18,7 @@
 
 ---
 
-## Integrantes
+## Integrantes del grupo 03
 
 * Pedro Starlin Ureña Cruz — 100063671
 * Enderson Estrella — 100071565
@@ -39,19 +39,35 @@ Esta implementación permite contar con una base sólida, escalable y preparada 
 
 ---
 
-## Objetivo General
 
-Desarrollar la estructura base de la aplicación web mediante una interfaz visual funcional utilizando HTML5 semántico y CSS externo.
+##  Objetivo General
+
+Desarrollar la estructura base de la aplicación web mediante una interfaz visual funcional, utilizando HTML5 semántico, CSS externo y PHP, estableciendo los cimientos para integraciones posteriores con backend y base de datos bajo una arquitectura escalable.
 
 ---
 
-## Objetivos Específicos
+##  Objetivos Específicos
 
-* Implementar estructura semántica utilizando HTML5
-* Desarrollar interfaz visual utilizando CSS
-* Aplicar colores institucionales
-* Implementar diseño responsive
-* Organizar el proyecto bajo arquitectura MVC
+* Aplicar una estructura semántica utilizando etiquetas HTML5 para garantizar accesibilidad y correcta organización del contenido.
+* Diseñar e implementar la interfaz visual del sistema empleando CSS externo, respetando los colores institucionales del centro educativo.
+* Incorporar un diseño responsive mediante Flexbox y Media Queries para asegurar compatibilidad con dispositivos móviles, tablets y computadoras.
+* Organizar el proyecto bajo el patrón Modelo–Vista–Controlador (MVC), separando la lógica de negocio, la presentación y la gestión de datos para facilitar la escalabilidad y el mantenimiento.
+* Implementar formularios funcionales (login, registro y navegación principal) preparados para la integración con backend y base de datos en las siguientes etapas del proyecto.
+
+---
+
+##  Implementaciones
+
+**Estructura MVC inicial:** organización del proyecto en controladores, vistas, layouts y base para modelos.
+**Ruteo básico:** `index.php` como punto de entrada para gestionar la carga y navegación entre vistas.
+**Vistas iniciales:** `home`, `login`, `register` y `nosotros`, construidas con HTML5 semántico.
+**Diseño responsive:** uso de CSS3, Flexbox y Media Queries para una interfaz adaptable a múltiples dispositivos.
+**Configuración del sistema:** archivos de configuración base (entorno, constantes, rutas) y gestión inicial de sesiones.
+**Seguridad de credenciales:** implementación de hash de contraseñas (p. ej., `password_hash`/`password_verify`) como preparación para la autenticación.
+**Flujo de autenticación y roles preparado:** lógica inicial para inicio de sesión y redirección por rol hacia los dashboards correspondientes (Administrador, Profesor, Estudiante).
+**Base de datos:** diseño del esquema SQL inicial para su integración en la siguiente etapa.
+**Dashboards:** correspondientes (Administrador) funcionar donde se podran administrar todos los usuarios y servicios ofrecido siendo este el usuario Root del sistema.
+
 
 ---
 
@@ -62,13 +78,13 @@ El proyecto utiliza el patrón Modelo–Vista–Controlador (MVC).
 Componentes:
 
 **Modelo**
-Gestiona los datos (pendiente implementación)
+Gestiona los datos (pendiente completar la de mas logicas de datos) 
 
 **Vista**
-Interfaz visual del sistema
+Interfaz visual del sistema (pendiente diseñar la de mas vistas)
 
 **Controlador**
-Gestiona la lógica y navegación
+Gestiona la lógica y navegación (pendiente completar la de mas logicas)
 
 ---
 
@@ -205,6 +221,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
