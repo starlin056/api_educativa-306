@@ -204,9 +204,10 @@ Despliegue en servidor web
 
 ## 🖼️ Vista Previa
 
-## 🖼️ Vista Previa
-
-![Vista Previa delSistema
+<p align="center">
+  <img src="https://rawrcontent.com/starlin056/api_educativa-306/main/IMAGEN.jpeg
+</p>
+``
 
 ---
 
@@ -231,6 +232,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
