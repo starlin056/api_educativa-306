@@ -1,5 +1,9 @@
 # Centro Educativo Digital
 
+<p align="center">
+  https://github.com/starlin056/api_educativa-306/blob/main/IMAGEN.jpeg
+</p>
+
 ## Proyecto Integrador ISW-306
 
 ---
@@ -221,6 +225,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
