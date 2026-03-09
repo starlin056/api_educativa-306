@@ -202,13 +202,6 @@ Despliegue en servidor web
 
 ---
 
-## 🖼️ Vista Previa
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/starlin056/api_educativa-306/main/IMAGEN.jpeg" alt="Vista Previa del Sistema" width="450
-
----
-
 ## Licencia
 
 Proyecto desarrollado con fines académicos.
@@ -230,6 +223,7 @@ Pedro Starlin Ureña Cruz
 En desarrollo y en crecimiento presentacion final del proyecto en etapa 4
 
 ---
+
 
 
 
