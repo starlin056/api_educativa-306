@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-    <?php include __DIR__ . '/../layouts/header.php'; ?>
+    
 
     <main>
         <section class="hero">
@@ -19,5 +19,5 @@
             <p>Somos una plataforma educativa dedicada a proporcionar recursos de calidad.</p>
         </section>
     </main>
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
+
 </html>
