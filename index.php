@@ -37,6 +37,8 @@ $routes = [
     // Públicas
     'home' => ['HomeController', 'index', null, ['GET']],
     'nosotros' => ['HomeController', 'about', null, ['GET']],
+    'admisiones' => ['HomeController', 'admisiones', null, ['GET']],
+
     'login' => ['AuthController', 'showLogin', 'AuthMiddleware::requireGuest', ['GET']],
     'register' => ['AuthController', 'showRegister', 'AuthMiddleware::requireGuest', ['GET']],
 

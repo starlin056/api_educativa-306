@@ -8,22 +8,25 @@ require_once BASE_PATH . '/models/Service.php';
 require_once BASE_PATH . '/models/Auth.php';
 require_once BASE_PATH . '/models/User.php';
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
 
     private Auth $auth;
     private Service $service;
     private User $user;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->auth = new Auth();
         $this->service = new Service();
         $this->user = new User();
     }
 
     // Página principal pública
-    public function index(): void {
+    public function index(): void
+    {
 
-        $services = $this->service->getAvailable(null,6);
+        $services = $this->service->getAvailable(null, 6);
 
         $this->with([
             'title' => 'Inicio - Centro Educativo',
@@ -35,9 +38,10 @@ class HomeController extends Controller {
     }
 
     // Dashboard general
-    public function dashboard(?string $role = null): void {
+    public function dashboard(?string $role = null): void
+    {
 
-        if(!$this->auth->check()){
+        if (!$this->auth->check()) {
 
             $_SESSION['error'] = "Debes iniciar sesión";
 
@@ -49,7 +53,7 @@ class HomeController extends Controller {
 
         $userRole = $user['rol_nombre'] ?? 'estudiante';
 
-        if($role && $role != $userRole && $userRole != 'admin'){
+        if ($role && $role != $userRole && $userRole != 'admin') {
 
             $_SESSION['error'] = "No tienes permiso";
 
@@ -57,110 +61,127 @@ class HomeController extends Controller {
             return;
         }
 
-        switch($userRole){
+        switch ($userRole) {
 
             case 'admin':
                 $this->adminDashboard();
-            break;
+                break;
 
             case 'docente':
                 $this->teacherDashboard();
-            break;
+                break;
 
             case 'padre':
                 $this->parentDashboard();
-            break;
+                break;
 
             default:
                 $this->studentDashboard();
-            break;
+                break;
         }
     }
 
     // ================= DASHBOARDS =================
 
-   private function adminDashboard(): void{
+    private function adminDashboard(): void
+    {
 
-    $stats = $this->getAdminStats();
+        $stats = $this->getAdminStats();
 
-    $services = $this->service->all(); // ← cargar servicios
+        $services = $this->service->all(); // ← cargar servicios
 
-    $this->with([
-        'title'=>'Panel de Administración',
-        'user'=>$this->auth->user(),
-        'stats'=>$stats,
-        'services'=>$services
-    ]);
+        $this->with([
+            'title' => 'Panel de Administración',
+            'user' => $this->auth->user(),
+            'stats' => $stats,
+            'services' => $services
+        ]);
 
-    $this->view('admin/dashboard');
-}
+        $this->view('admin/dashboard');
+    }
 
-    private function teacherDashboard(): void{
+    private function teacherDashboard(): void
+    {
 
         $user = $this->auth->user();
 
         $courses = $this->getTeacherCourses($user['id']);
 
         $this->with([
-            'title'=>'Panel Docente',
-            'user'=>$user,
-            'courses'=>$courses
+            'title' => 'Panel Docente',
+            'user' => $user,
+            'courses' => $courses
         ]);
 
         $this->view('docente/dashboard');
     }
 
-    private function studentDashboard(): void{
+    private function studentDashboard(): void
+    {
 
         $user = $this->auth->user();
 
         $enrollments = $this->getStudentEnrollments($user['id']);
 
         $this->with([
-            'title'=>'Panel Estudiantil',
-            'user'=>$user,
-            'enrollments'=>$enrollments
+            'title' => 'Panel Estudiantil',
+            'user' => $user,
+            'enrollments' => $enrollments
         ]);
 
         $this->view('estudiante/dashboard');
     }
 
-    private function parentDashboard(): void{
+    private function parentDashboard(): void
+    {
 
         $user = $this->auth->user();
 
         $children = $this->getParentChildren($user['id']);
 
         $this->with([
-            'title'=>'Portal de Padres',
-            'user'=>$user,
-            'children'=>$children
+            'title' => 'Portal de Padres',
+            'user' => $user,
+            'children' => $children
         ]);
 
         $this->view('padre/dashboard');
     }
 
     // Página nosotros
-    public function about(): void{
+    public function about(): void
+    {
 
         $this->with([
-            'title'=>'Nosotros - Centro Educativo'
+            'title' => 'Nosotros - Centro Educativo'
         ]);
 
         $this->view('nosotros/index');
     }
 
+    // Página admisiones
+    public function admisiones(): void
+    {
+
+        $this->with([
+            'title' => 'Admisiones - Centro Educativo'
+        ]);
+
+        $this->view('admisiones/index');
+    }
+
     // ================== MÉTODOS PRIVADOS ==================
 
-    private function getAdminStats(): array{
+    private function getAdminStats(): array
+    {
 
         $db = $this->user->getConnection();
 
         $stats = [];
 
-        $roles = ['admin','docente','estudiante','padre'];
+        $roles = ['admin', 'docente', 'estudiante', 'padre'];
 
-        foreach($roles as $role){
+        foreach ($roles as $role) {
 
             $stmt = $db->prepare("
             SELECT COUNT(*) 
@@ -183,62 +204,63 @@ class HomeController extends Controller {
         return $stats;
     }
 
-    private function getTeacherCourses(int $teacherId): array{
+    private function getTeacherCourses(int $teacherId): array
+    {
 
         return [
 
             [
-                'id'=>1,
-                'nombre'=>'Matemáticas Avanzadas',
-                'estudiantes'=>25
+                'id' => 1,
+                'nombre' => 'Matemáticas Avanzadas',
+                'estudiantes' => 25
             ],
 
             [
-                'id'=>2,
-                'nombre'=>'Programación Web',
-                'estudiantes'=>18
+                'id' => 2,
+                'nombre' => 'Programación Web',
+                'estudiantes' => 18
             ]
 
         ];
     }
 
-    private function getStudentEnrollments(int $studentId): array{
+    private function getStudentEnrollments(int $studentId): array
+    {
 
         return [
 
             [
-                'id'=>1,
-                'servicio'=>'Educación Primaria',
-                'estado'=>'aprobada'
+                'id' => 1,
+                'servicio' => 'Educación Primaria',
+                'estado' => 'aprobada'
             ],
 
             [
-                'id'=>4,
-                'servicio'=>'Programa Deportivo',
-                'estado'=>'pendiente'
+                'id' => 4,
+                'servicio' => 'Programa Deportivo',
+                'estado' => 'pendiente'
             ]
 
         ];
     }
 
-    private function getParentChildren(int $parentId): array{
+    private function getParentChildren(int $parentId): array
+    {
 
         return [
 
             [
-                'id'=>101,
-                'nombre'=>'María Ureña',
-                'grado'=>'5to Primaria'
+                'id' => 101,
+                'nombre' => 'María Ureña',
+                'grado' => '5to Primaria'
             ],
 
             [
-                'id'=>102,
-                'nombre'=>'Carlos Ureña',
-                'grado'=>'2do Secundaria'
+                'id' => 102,
+                'nombre' => 'Carlos Ureña',
+                'grado' => '2do Secundaria'
             ]
 
         ];
     }
-
-    
 }

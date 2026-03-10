@@ -50,6 +50,8 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
                 <ul class="nav-links">
                     <li><a href="<?php echo $ruta_base; ?>/?page=home">Inicio</a></li>
                     <li><a href="<?php echo $ruta_base; ?>/?page=nosotros">Nosotros</a></li>
+                    <li><a href="<?php echo $ruta_base; ?>/?page=admisiones">Admisiones</a></li>
+
 
                     <?php if ($user): ?>
                         <li>
