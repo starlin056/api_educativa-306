@@ -3,9 +3,6 @@
 // Listado de usuarios con filtros y acciones
 // @phpstan-ignore-file
 ?>
-
-
-
 <section class="user-management">
     <div class="page-header">
         <h1><i class="fas fa-users"></i> <?= htmlspecialchars($title) ?></h1>

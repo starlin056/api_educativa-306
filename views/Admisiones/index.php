@@ -10,12 +10,12 @@
 
     <main>
         <section class="hero">
-            <h1>Sobre nuestas Admisiones </h1>
+            <h1>Sobre nuestras Admisiones </h1>
             <p>Bienvenido a API Educativa</p>
         </section>
 
         <section class="content">
-            <h2>Plnes de studios</h2>
+            <h2>Planes de estudios</h2>
             <p>Somos una plataforma educativa dedicada a proporcionar recursos de calidad.</p>
         </section>
     </main>
