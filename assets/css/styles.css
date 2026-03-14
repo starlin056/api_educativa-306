@@ -1111,6 +1111,7 @@ footer {
   color: var(--color-primary);
   margin-right: 0.5rem;
 }
+<<<<<<< HEAD
 /* =====================================================
    ESTILOS PARA ADMISIONES 
 ===================================================== */
@@ -1250,3 +1251,5 @@ img {
         grid-template-columns: 1fr;
     }
 }
+=======
+>>>>>>> 3cda49ce4a99e685b61ce4ff850dc6a4cdc702c8
