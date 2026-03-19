@@ -137,7 +137,6 @@ api_educativa/
 │   ├── estru-database.png
 │   └── schema.sql
 │
-├── helpers/
 │
 ├── middleware/
 │   ├── AuthMiddleware.php
@@ -250,7 +249,7 @@ http://localhost/api_educativa
 | Etapa   | Descripción                                 | Estado          |
 | ------- | ------------------------------------------- | --------------- |
 | Etapa 1 | Estructura MVC + Interfaz visual + PHP base | ✅ Completada   |
-| Etapa 2 | Implementación de JavaScript                | ✅ Completada o |
+| Etapa 2 | Implementación de JavaScript                | ✅ Completada   |
 | Etapa 3 | Implementación de PHP y MySQL               | ✅ Completada   |
 | Etapa 4 | Despliegue en servidor web                  | ⏳ Pendiente    |
 
@@ -258,7 +257,7 @@ http://localhost/api_educativa
 
 ## Estado Actual
 
-> **Etapa 1 completada.** El sistema cuenta con arquitectura MVC, interfaz visual funcional, formularios listos para backend, dashboards por rol y diseño adaptable.
+> **Etapa 3 completada.** El sistema cuenta con arquitectura MVC, interfaz visual funcional, formularios listos para backend, dashboards por rol y diseño adaptable.
 
 ---
 
