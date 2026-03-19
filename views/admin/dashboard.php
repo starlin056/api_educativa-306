@@ -58,20 +58,7 @@
             </div>
         </a>
 
-        <!-- Padres 
-        <a href="<?= APP_URL ?>/?page=admin/users&role=padre" class="stat-card secondary" title="Gestionar Padres">
-            <div class="stat-icon">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="stat-content">
-                <h3>Padres/Tutores</h3>
-                <p class="stat-number"><?= $stats['padre'] ?? 0 ?></p>
-                <small>Tutores registrados</small>
-            </div>
-            <div class="stat-arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-        </a> -->
+
 
         <!-- Servicios -->
         <a href="<?= APP_URL ?>/?page=admin/services" class="stat-card success" title="Gestionar Servicios">
@@ -96,13 +83,7 @@
             <div class="stat-content">
                 <h3>Pendientes</h3>
                 <p class="stat-number">
-                    <?php
-                    // Contar inscripciones pendientes (consulta directa)
-                    $db = (new \User())->getConnection();
-                    $stmt = $db->prepare("SELECT COUNT(*) FROM inscripciones WHERE estado = 'pendiente'");
-                    $stmt->execute();
-                    echo $stmt->fetchColumn();
-                    ?>
+                    <?= $pendingInscriptions ?? 0 ?>
                 </p>
                 <small>Esperan aprobación</small>
             </div>
@@ -123,12 +104,8 @@
             <a href="<?= APP_URL ?>/?page=admin/services&action=create" class="btn btn-secondary">
                 <i class="fas fa-plus-circle"></i> Nuevo Servicio
             </a>
-            <a href="<?= APP_URL ?>/?page=admin/reports" class="btn btn-info">
-                <i class="fas fa-chart-bar"></i> Ver Reportes
-            </a>
-            <a href="<?= APP_URL ?>/?page=admin/settings" class="btn btn-warning">
-                <i class="fas fa-cog"></i> Configuración
-            </a>
+
+
         </div>
     </div>
 
@@ -137,18 +114,6 @@
         <h3><i class="fas fa-history"></i> Actividad Reciente</h3>
         <div class="activity-list">
             <?php
-            // Consultar últimos 5 usuarios registrados
-            $db = (new \User())->getConnection();
-            $stmt = $db->prepare("
-                SELECT u.nombre_completo, u.email, r.nombre as rol, u.created_at 
-                FROM usuarios u 
-                JOIN roles r ON u.rol_id = r.id 
-                ORDER BY u.created_at DESC 
-                LIMIT 5
-            ");
-            $stmt->execute();
-            $recentUsers = $stmt->fetchAll();
-
             if (!empty($recentUsers)):
                 foreach ($recentUsers as $user):
             ?>

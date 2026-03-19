@@ -1,7 +1,5 @@
 <?php
 // controllers/HomeController.php
-// Controlador para página principal y dashboards por rol
-// @phpstan-ignore-file
 
 require_once __DIR__ . '/Controller.php';
 require_once BASE_PATH . '/models/Service.php';
@@ -10,7 +8,6 @@ require_once BASE_PATH . '/models/User.php';
 
 class HomeController extends Controller
 {
-
     private Auth $auth;
     private Service $service;
     private User $user;
@@ -22,10 +19,14 @@ class HomeController extends Controller
         $this->user = new User();
     }
 
-    // Página principal pública
+    /*
+    |--------------------------------------------------------------------------
+    | Página principal
+    |--------------------------------------------------------------------------
+    */
+
     public function index(): void
     {
-
         $services = $this->service->getAvailable(null, 6);
 
         $this->with([
@@ -37,75 +38,132 @@ class HomeController extends Controller
         $this->view('home/home');
     }
 
-    // Dashboard general
-    public function dashboard(?string $role = null): void
-    {
+    /*
+    |--------------------------------------------------------------------------
+    | Página nosotros
+    |--------------------------------------------------------------------------
+    */
 
+    public function about(): void
+    {
+        $this->with([
+            'title' => 'Sobre Nosotros'
+        ]);
+
+        $this->view('nosotros/index'); // Cambiado a
+
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página admisiones
+    |--------------------------------------------------------------------------
+    */
+
+    public function admisiones(): void
+    {
+        $this->with([
+            'title' => 'Admisiones'
+        ]);
+
+        $this->view('admisiones/index');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard principal
+    |--------------------------------------------------------------------------
+    */
+
+    public function dashboard(): void
+    {
         if (!$this->auth->check()) {
 
             $_SESSION['error'] = "Debes iniciar sesión";
-
             $this->redirect('?page=login');
             return;
         }
 
         $user = $this->auth->user();
+        $role = $user['rol_nombre'] ?? 'estudiante';
 
-        $userRole = $user['rol_nombre'] ?? 'estudiante';
-
-        if ($role && $role != $userRole && $userRole != 'admin') {
-
-            $_SESSION['error'] = "No tienes permiso";
-
-            $this->redirect('?page=home');
-            return;
-        }
-
-        switch ($userRole) {
+        switch ($role) {
 
             case 'admin':
-                $this->adminDashboard();
+                $this->adminDashboard($user);
                 break;
 
             case 'docente':
-                $this->teacherDashboard();
+                $this->teacherDashboard($user);
                 break;
 
             case 'padre':
-                $this->parentDashboard();
+                $this->parentDashboard($user);
                 break;
 
             default:
-                $this->studentDashboard();
+                $this->studentDashboard($user);
                 break;
         }
     }
 
-    // ================= DASHBOARDS =================
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN DASHBOARD
+    |--------------------------------------------------------------------------
+    */
 
-    private function adminDashboard(): void
+    private function adminDashboard(array $user): void
     {
+        $db = $this->user->getDB();
 
-        $stats = $this->getAdminStats();
+        $stats = $this->getAdminStats($db);
 
-        $services = $this->service->all(); // ← cargar servicios
+        $pendingInscriptions = $db
+            ->query("SELECT COUNT(*) FROM inscripciones WHERE estado='pendiente'")
+            ->fetchColumn();
+
+        $stmt = $db->query("
+            SELECT u.nombre_completo, u.email, r.nombre AS rol, u.created_at
+            FROM usuarios u
+            JOIN roles r ON r.id = u.rol_id
+            ORDER BY u.created_at DESC
+            LIMIT 5
+        ");
+
+        $recentUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $this->with([
             'title' => 'Panel de Administración',
-            'user' => $this->auth->user(),
+            'user' => $user,
             'stats' => $stats,
-            'services' => $services
+            'pendingInscriptions' => $pendingInscriptions,
+            'recentUsers' => $recentUsers
         ]);
 
         $this->view('admin/dashboard');
     }
 
-    private function teacherDashboard(): void
+    /*
+    |--------------------------------------------------------------------------
+    | DOCENTE DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
+    private function teacherDashboard(array $user): void
     {
+        $db = $this->user->getDB();
 
-        $user = $this->auth->user();
+        $stmt = $db->prepare("
+            SELECT id, nombre
+            FROM aulas
+            WHERE docente_id = ?
+        ");
 
-        $courses = $this->getTeacherCourses($user['id']);
+        $stmt->execute([$user['id']]);
+
+        $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $this->with([
             'title' => 'Panel Docente',
@@ -116,12 +174,26 @@ class HomeController extends Controller
         $this->view('docente/dashboard');
     }
 
-    private function studentDashboard(): void
+    /*
+    |--------------------------------------------------------------------------
+    | ESTUDIANTE DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
+    private function studentDashboard(array $user): void
     {
+        $db = $this->user->getDB();
 
-        $user = $this->auth->user();
+        $stmt = $db->prepare("
+            SELECT s.titulo, i.estado
+            FROM inscripciones i
+            JOIN servicios s ON s.id = i.servicio_id
+            WHERE i.usuario_id = ?
+        ");
 
-        $enrollments = $this->getStudentEnrollments($user['id']);
+        $stmt->execute([$user['id']]);
+
+        $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $this->with([
             'title' => 'Panel Estudiantil',
@@ -132,12 +204,27 @@ class HomeController extends Controller
         $this->view('estudiante/dashboard');
     }
 
-    private function parentDashboard(): void
+    /*
+    |--------------------------------------------------------------------------
+    | PADRE DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
+    private function parentDashboard(array $user): void
     {
+        $db = $this->user->getDB();
 
-        $user = $this->auth->user();
+        $stmt = $db->prepare("
+            SELECT u.nombre_completo, a.nombre AS aula
+            FROM usuarios u
+            JOIN aulas_estudiantes ae ON ae.estudiante_id = u.id
+            JOIN aulas a ON a.id = ae.aula_id
+            WHERE ae.padre_id = ?
+        ");
 
-        $children = $this->getParentChildren($user['id']);
+        $stmt->execute([$user['id']]);
+
+        $children = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $this->with([
             'title' => 'Portal de Padres',
@@ -148,35 +235,14 @@ class HomeController extends Controller
         $this->view('padre/dashboard');
     }
 
-    // Página nosotros
-    public function about(): void
+    /*
+    |--------------------------------------------------------------------------
+    | Estadísticas admin
+    |--------------------------------------------------------------------------
+    */
+
+    private function getAdminStats(PDO $db): array
     {
-
-        $this->with([
-            'title' => 'Nosotros - Centro Educativo'
-        ]);
-
-        $this->view('nosotros/index');
-    }
-
-    // Página admisiones
-    public function admisiones(): void
-    {
-
-        $this->with([
-            'title' => 'Admisiones - Centro Educativo'
-        ]);
-
-        $this->view('admisiones/index');
-    }
-
-    // ================== MÉTODOS PRIVADOS ==================
-
-    private function getAdminStats(): array
-    {
-
-        $db = $this->user->getConnection();
-
         $stats = [];
 
         $roles = ['admin', 'docente', 'estudiante', 'padre'];
@@ -184,83 +250,21 @@ class HomeController extends Controller
         foreach ($roles as $role) {
 
             $stmt = $db->prepare("
-            SELECT COUNT(*) 
-            FROM usuarios u
-            INNER JOIN roles r ON r.id = u.rol_id
-            WHERE r.nombre = ?
-            AND u.activo = 1
+                SELECT COUNT(*)
+                FROM usuarios u
+                JOIN roles r ON r.id = u.rol_id
+                WHERE r.nombre = ? AND u.activo = 1
             ");
 
             $stmt->execute([$role]);
 
-            $stats[$role] = $stmt->fetchColumn() ?? 0;
+            $stats[$role] = $stmt->fetchColumn() ?: 0;
         }
 
-        $stmt = $db->prepare("SELECT COUNT(*) FROM servicios WHERE disponible = 1");
-        $stmt->execute();
-
-        $stats['servicios'] = $stmt->fetchColumn() ?? 0;
+        $stats['servicios'] = $db
+            ->query("SELECT COUNT(*) FROM servicios WHERE disponible = 1")
+            ->fetchColumn();
 
         return $stats;
-    }
-
-    private function getTeacherCourses(int $teacherId): array
-    {
-
-        return [
-
-            [
-                'id' => 1,
-                'nombre' => 'Matemáticas Avanzadas',
-                'estudiantes' => 25
-            ],
-
-            [
-                'id' => 2,
-                'nombre' => 'Programación Web',
-                'estudiantes' => 18
-            ]
-
-        ];
-    }
-
-    private function getStudentEnrollments(int $studentId): array
-    {
-
-        return [
-
-            [
-                'id' => 1,
-                'servicio' => 'Educación Primaria',
-                'estado' => 'aprobada'
-            ],
-
-            [
-                'id' => 4,
-                'servicio' => 'Programa Deportivo',
-                'estado' => 'pendiente'
-            ]
-
-        ];
-    }
-
-    private function getParentChildren(int $parentId): array
-    {
-
-        return [
-
-            [
-                'id' => 101,
-                'nombre' => 'María Ureña',
-                'grado' => '5to Primaria'
-            ],
-
-            [
-                'id' => 102,
-                'nombre' => 'Carlos Ureña',
-                'grado' => '2do Secundaria'
-            ]
-
-        ];
     }
 }

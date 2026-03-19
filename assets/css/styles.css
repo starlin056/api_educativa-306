@@ -108,9 +108,427 @@ nav {
 .nav-links a:hover {
   color: var(--color-secondary);
 }
+/* =====================================================
+   COMPONENTES de servicios
+===================================================== */
 
-/* ================= ADMIN DASHBOARD ================= */
+.services-management {
+  padding: 1rem 0;
+}
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.filters-bar {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filters-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.filter-group select,
+.filter-group input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
+.btn-search {
+  padding: 0.5rem 1rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-clear {
+  padding: 0.5rem 1rem;
+  color: #dc3545;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: var(--color-primary);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.data-table tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table tr.row-inactive {
+  opacity: 0.7;
+  background: #fff5f5;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-academico {
+  background: #0b1838;
+  color: white;
+}
+
+.badge-deportivo {
+  background: #28a745;
+  color: white;
+}
+
+.badge-cultural {
+  background: #6f42c1;
+  color: white;
+}
+
+.badge-tecnologico {
+  background: #17a2b8;
+  color: white;
+}
+
+.badge-danger {
+  background: #dc3545;
+  color: white;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 24px;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .toggle-slider {
+  background-color: #28a745;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Acciones */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.btn-action:hover {
+  opacity: 0.8;
+}
+
+.btn-edit {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-delete {
+  background: #dc3545;
+  color: white;
+}
+
+.inline-form {
+  display: inline;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0 0 8px 8px;
+}
+
+.page-link {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: all 0.2s;
+}
+
+.page-link:hover,
+.page-link.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.page-info {
+  margin-left: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filters-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    width: 100%;
+  }
+
+  .data-table {
+    font-size: 0.85rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+}
+/* ===================================================== 
+   COMPONENTES ESPECÍFICOS de javascript  Estilos específicos para JS (validaciones, alertas) 
+===================================================== */
+
+/* Estados de validación de campos */
+.input-error {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+
+.error-message {
+  display: block;
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Alertas dinámicas */
+.alert {
+  position: relative;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-success {
+  background: #d4edda;
+  border-left-color: #28a745;
+  color: #155724;
+}
+.alert-error {
+  background: #f8d7da;
+  border-left-color: #dc3545;
+  color: #721c24;
+}
+.alert-warning {
+  background: #fff3cd;
+  border-left-color: #ffc107;
+  color: #856404;
+}
+.alert-info {
+  background: #d1ecf1;
+  border-left-color: #17a2b8;
+  color: #0c5460;
+}
+
+.alert-dismissible {
+  padding-right: 3rem;
+}
+
+.alert-close {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+.alert-close:hover {
+  opacity: 1;
+}
+
+/* Toggle de contraseña */
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 2;
+}
+.password-toggle:hover {
+  color: var(--color-primary);
+}
+
+/* Focus visible para accesibilidad */
+.focus-visible:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Responsive para formularios */
+@media (max-width: 768px) {
+  .alert {
+    font-size: 0.95rem;
+    padding: 0.875rem 1.25rem;
+  }
+  input[type='email'],
+  input[type='password'],
+  input[type='text'] {
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+}
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
 /* Estilos específicos para dashboard dinámico */
 .admin-dashboard {
   padding: 1rem 0;
@@ -1082,7 +1500,6 @@ footer {
   }
 }
 
-
 /* =====================================================
    LISTAS EN CONTENIDO PARA (NOSOTROS)
 ===================================================== */
@@ -1110,4 +1527,42 @@ footer {
 .content2 h3 i {
   color: var(--color-primary);
   margin-right: 0.5rem;
+}
+/* =====================================================
+   ESTILOS ESPECÍFICOS PARA PÁGINA servicios (formulario de edición/creación)
+===================================================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  gap: 50px; /* Espacio entre campos */
+  width: 100%;
+  margin: 0 auto; /* Que se expanda en todo el contenedor */
+}
+/* Forzar que el contenedor ocupe toda la pantalla */
+.form-container {
+  width: 100%; /* Ocupa todo el ancho */
+  max-width: none; /* Elimina límites de ancho */
+  margin: 0; /* Quita el centrado automático */
+  padding: 30px; /* Espaciado interno opcional */
+  box-sizing: border-box;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.form-group input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+.form-group input:focus {
+  border-color: var(--color-secondary);
+  outline: none;
 }

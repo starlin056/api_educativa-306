@@ -7,6 +7,7 @@ require_once __DIR__ . '/Controller.php';
 require_once BASE_PATH . '/models/User.php';
 require_once BASE_PATH . '/middleware/AuthMiddleware.php';
 
+
 class UserController extends Controller
 {
     private User $user;
@@ -22,7 +23,6 @@ class UserController extends Controller
      */
     public function index(): void
     {
-        // Verificar que sea admin
         if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
             $_SESSION['error'] = 'Acceso denegado';
@@ -30,38 +30,71 @@ class UserController extends Controller
             return;
         }
 
-        $role = $_GET['role'] ?? null;
-        $search = $_GET['search'] ?? null;
-        $page = max(1, (int)($_GET['page'] ?? 1));
-        $perPage = 10;
+        // Obtén la conexión PDO de forma segura
+        $pdo = $this->user->getDB();
 
-        // Obtener usuarios filtrados
-        if ($role && $role !== 'all') {
-            $users = $this->user->getByRole($role);
-        } elseif ($search) {
-            $users = $this->user->search($search);
-        } else {
-            $users = $this->user->findAll('nombre_completo', 'ASC');
-        }
-
-        // Paginación simple
-        $users = array_slice($users, ($page - 1) * $perPage, $perPage);
-        $total = count($this->user->findAll());
-        $totalPages = ceil($total / $perPage);
-
-        // Obtener lista de roles para el filtro
+        // 1. Obtener todos los roles para el filtro
         $roles = $this->getRolesList();
 
+        // 2. Filtrado y Búsqueda
+        $roleFilter = $_GET['role'] ?? '';
+        $searchFilter = $_GET['search'] ?? '';
+
+        $sql = "SELECT u.*, r.nombre as rol_nombre 
+            FROM usuarios u 
+            JOIN roles r ON u.rol_id = r.id";
+
+        $where = [];
+        $params = [];
+
+        if ($roleFilter && $roleFilter !== 'all') {
+            $where[] = "r.nombre = ?";
+            $params[] = $roleFilter;
+        }
+
+        if ($searchFilter) {
+            $where[] = "(u.nombre_completo LIKE ? OR u.email LIKE ?)";
+            $params[] = "%{$searchFilter}%";
+            $params[] = "%{$searchFilter}%";
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        // 4. Paginación
+        $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+        $perPage = 10;
+
+        $countSql = "SELECT COUNT(*) FROM usuarios u JOIN roles r ON u.rol_id = r.id";
+        if (!empty($where)) {
+            $countSql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        $totalStmt = $pdo->prepare($countSql);
+        $totalStmt->execute($params);
+        $totalUsers = $totalStmt->fetchColumn();
+
+        $totalPages = ceil($totalUsers / $perPage);
+        $offset = ($page - 1) * $perPage;
+
+        $sql .= " ORDER BY u.created_at DESC LIMIT {$perPage} OFFSET {$offset}";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $this->with([
-            'title' => 'Gestión de Usuarios',
-            'users' => $users,
-            'role' => $role,
-            'search' => $search,
-            'roles' => $roles,
-            'pagination' => [
-                'current' => $page,
-                'total' => $totalPages,
-                'total_items' => $total
+            'title'       => 'Gestión de Usuarios',
+            'users'       => $users,
+            'roles'       => $roles,
+            'role'        => $roleFilter,
+            'search'      => $searchFilter,
+            'pagination'  => [
+                'current'     => $page,
+                'total'       => $totalPages,
+                'total_items' => $totalUsers,
+                'per_page'    => $perPage
             ]
         ]);
 
@@ -281,8 +314,10 @@ class UserController extends Controller
 
     private function getRolesList(): array
     {
-        $db = $this->user->getConnection();
-        $stmt = $db->query("SELECT id, nombre, descripcion FROM roles ORDER BY nombre");
-        return $stmt->fetchAll();
+        // Usa el helper getDB() que devuelve PDO
+        $pdo = $this->user->getDB();
+
+        $stmt = $pdo->query("SELECT id, nombre FROM roles ORDER BY nombre ASC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
