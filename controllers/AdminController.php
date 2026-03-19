@@ -1,18 +1,20 @@
 <?php
 // controllers/AdminController.php
 
-require_once __DIR__.'/Controller.php';
-require_once BASE_PATH.'/models/Auth.php';
-require_once BASE_PATH.'/models/User.php';
-require_once BASE_PATH.'/models/Service.php';
+require_once __DIR__ . '/Controller.php';
+require_once BASE_PATH . '/models/Auth.php';
+require_once BASE_PATH . '/models/User.php';
+require_once BASE_PATH . '/models/Service.php';
 
-class AdminController extends Controller{
+class AdminController extends Controller
+{
 
     private Auth $auth;
     private User $user;
     private Service $service;
 
-    public function __construct(){
+    public function __construct()
+    {
 
         $this->auth = new Auth();
         $this->user = new User();
@@ -22,20 +24,21 @@ class AdminController extends Controller{
     }
 
     // Verificar admin
-    private function checkAdmin(){
+    private function checkAdmin()
+    {
 
-        if(!$this->auth->check()){
+        if (!$this->auth->check()) {
 
-            $_SESSION['error']="Debes iniciar sesión";
+            $_SESSION['error'] = "Debes iniciar sesión";
 
             $this->redirect('?page=login');
         }
 
         $user = $this->auth->user();
 
-        if(($user['rol_nombre'] ?? '') != 'admin'){
+        if (($user['rol_nombre'] ?? '') != 'admin') {
 
-            $_SESSION['error']="Acceso restringido";
+            $_SESSION['error'] = "Acceso restringido";
 
             $this->redirect('?page=home');
         }
@@ -43,111 +46,163 @@ class AdminController extends Controller{
 
     // ================= DASHBOARD =================
 
-    public function dashboard(){
-
-        $db = $this->user->getConnection();
-
-        $stats = [];
-
-        $stats['usuarios'] = $db->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
-        $stats['servicios'] = $db->query("SELECT COUNT(*) FROM servicios")->fetchColumn();
-        $stats['activos'] = $db->query("SELECT COUNT(*) FROM usuarios WHERE activo = 1")->fetchColumn();
-
-        $this->with([
-            'title'=>'Administrador',
-            'stats'=>$stats,
-            'user'=>$this->auth->user()
-        ]);
-
-        $this->view('admin/dashboard');
-    }
+    // El dashboard ahora es manejado por HomeController
 
     // ================= USUARIOS =================
 
-    public function users(){
+    public function users()
+    {
+        $pdo = $this->service->getDB();
 
-        $db = $this->user->getConnection();
 
-        $stmt = $db->query("
-        SELECT u.*, r.nombre as rol
-        FROM usuarios u
-        INNER JOIN roles r ON r.id = u.rol_id
-        ORDER BY u.id DESC
-        ");
+        // 1. Obtener todos los roles para el filtro
+        $roles = $pdo->query("SELECT id, nombre FROM roles ORDER BY nombre ASC")->fetchAll(PDO::FETCH_ASSOC);
 
-        $users = $stmt->fetchAll();
+        // 2. Filtrado y Búsqueda
+        $roleFilter = $_GET['role'] ?? '';
+        $searchFilter = $_GET['search'] ?? '';
 
+        // 3. Construcción de la consulta dinámica
+        $sql = "SELECT u.*, r.nombre as rol_nombre 
+                FROM usuarios u 
+                JOIN roles r ON u.rol_id = r.id";
+
+        $where = [];
+        $params = [];
+
+        if ($roleFilter) {
+            $where[] = "r.nombre = ?";
+            $params[] = $roleFilter;
+        }
+
+        if ($searchFilter) {
+            $where[] = "(u.nombre_completo LIKE ? OR u.email LIKE ?)";
+            $params[] = "%{$searchFilter}%";
+            $params[] = "%{$searchFilter}%";
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        // 4. Paginación
+        $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
+        $perPage = 10; // 10 usuarios por página
+
+        // Contar total de resultados para la paginación
+        $countSql = "SELECT COUNT(*) FROM usuarios u JOIN roles r ON u.rol_id = r.id";
+        if (!empty($where)) {
+            $countSql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        $totalStmt = $pdo->prepare($countSql);
+        $totalStmt->execute($params);
+        $totalUsers = $totalStmt->fetchColumn();
+
+        $totalPages = ceil($totalUsers / $perPage);
+        $offset = ($page - 1) * $perPage;
+
+        $sql .= " ORDER BY u.created_at DESC LIMIT {$perPage} OFFSET {$offset}";
+
+        // 5. Ejecutar la consulta final
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 6. Pasar todos los datos a la vista
         $this->with([
-            'title'=>'Usuarios',
-            'users'=>$users
+            'title' => 'Gestión de Usuarios',
+            'users' => $users,
+            'roles' => $roles, // para el dropdown
+            'role' => $roleFilter, // valor seleccionado
+            'search' => $searchFilter, // valor del buscador
+            'pagination' => [
+                'current' => $page,
+                'total' => $totalPages,
+                'total_items' => $totalUsers,
+                'per_page' => $perPage
+            ]
         ]);
 
-        $this->view('admin/users');
+        $this->view('admin/users/index');
     }
 
     // Crear usuario
-    public function createUser(){
+    public function createUser()
+    {
 
-        if($_SERVER['REQUEST_METHOD']!='POST'){
-
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $this->redirect('?page=admin/users');
         }
 
-        $data = [
+        // Validación básica
+        if (empty($_POST['nombre_completo']) || empty($_POST['email']) || empty($_POST['password'])) {
+            $_SESSION['error'] = "Todos los campos son obligatorios.";
+            // Idealmente, aquí se redirigiría a un formulario de creación,
+            // pero la ruta actual es manejada por UserController.
+            // Esto es una solución temporal.
+            $this->redirect('?page=admin/users');
+            return;
+        }
 
-            'nombre'=>$_POST['nombre'] ?? '',
-            'email'=>$_POST['email'] ?? '',
-            'password'=>password_hash($_POST['password'],PASSWORD_DEFAULT),
-            'rol_id'=>$_POST['rol_id'] ?? 3
+        $data = [
+            'nombre_completo' => $_POST['nombre_completo'],
+            'email'           => $_POST['email'],
+            'password'        => password_hash($_POST['password'], PASSWORD_DEFAULT),
+            'rol_id'          => $_POST['rol_id'] ?? 3
         ];
 
-        $db = $this->user->getConnection();
+        $pdo = $this->service->getDB();
 
-        $stmt = $db->prepare("
+
+        // Corregir el nombre de la columna
+        $stmt = $pdo->prepare("
         INSERT INTO usuarios
-        (nombre,email,password,rol_id,activo)
-        VALUES(?,?,?,?,1)
+        (nombre_completo, email, password_hash, rol_id, activo)
+        VALUES(?, ?, ?, ?, 1)
         ");
 
         $stmt->execute(array_values($data));
 
-        $_SESSION['success']="Usuario creado";
-
+        $_SESSION['success'] = "Usuario creado exitosamente.";
         $this->redirect('?page=admin/users');
     }
 
     // ================= SERVICIOS =================
 
-    public function services(){
+    public function services()
+    {
 
         $services = $this->service->all();
 
         $this->with([
-            'title'=>'Servicios',
-            'services'=>$services
+            'title' => 'Servicios',
+            'services' => $services
         ]);
 
-        $this->view('admin/services');
+        $this->view('admin/services/index');
     }
 
-    public function createService(){
+    public function createService()
+    {
 
-        if($_SERVER['REQUEST_METHOD']!='POST'){
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
             $this->redirect('?page=admin/services');
         }
 
         $data = [
 
-            'nombre'=>$_POST['nombre'],
-            'descripcion'=>$_POST['descripcion'],
-            'precio'=>$_POST['precio'],
-            'disponible'=>1
+            'nombre' => $_POST['nombre'],
+            'descripcion' => $_POST['descripcion'],
+            'precio' => $_POST['precio'],
+            'disponible' => 1
         ];
 
-        $db = $this->service->getConnection();
+        $pdo = $this->service->getDB();
 
-        $stmt = $db->prepare("
+
+        $stmt = $pdo->prepare("
         INSERT INTO servicios
         (nombre,descripcion,precio,disponible)
         VALUES(?,?,?,?)
@@ -155,7 +210,7 @@ class AdminController extends Controller{
 
         $stmt->execute(array_values($data));
 
-        $_SESSION['success']="Servicio creado";
+        $_SESSION['success'] = "Servicio creado";
 
         $this->redirect('?page=admin/services');
     }

@@ -1,15 +1,22 @@
 <?php
 // controllers/Controller.php
-// Clase base para controladores - Manejo de vistas y respuestas
-// @phpstan-ignore-file
 
-class Controller {
+class Controller
+{
     protected array $data = [];
-    
+    protected $db;
+
+    public function __construct()
+    {
+        require_once BASE_PATH . '/config/database.php';
+        $this->db = Database::getInstance();
+    }
+
     /**
      * Pasar datos a la vista
      */
-    public function with($key, $value = null): self {
+    public function with($key, $value = null): self
+    {
         if (is_array($key)) {
             $this->data = array_merge($this->data, $key);
         } else {
@@ -17,61 +24,76 @@ class Controller {
         }
         return $this;
     }
-    
+
     /**
-     * Renderizar vista con layout
+     * Renderizar vista con o sin layout
      */
-    public function view(string $viewPath, bool $layout = true): void {
-        extract($this->data);
-        
+    public function view(string $viewPath, bool $layout = true): void
+    {
+        extract($this->data, EXTR_SKIP);
+
         if ($layout) {
             include BASE_PATH . '/views/layouts/header.php';
-            include BASE_PATH . "/views/{$viewPath}.php";
+        }
+
+        include BASE_PATH . "/views/{$viewPath}.php";
+
+        if ($layout) {
             include BASE_PATH . '/views/layouts/footer.php';
-        } else {
-            include BASE_PATH . "/views/{$viewPath}.php";
         }
     }
-    
+
     /**
-     * Redireccionar a URL
+     * Redirigir a otra URL
      */
-    public function redirect(string $url): void {
+    public function redirect(string $url): void
+    {
         if (strpos($url, 'http') !== 0) {
-            $url = (defined('APP_URL') ? APP_URL : 'http://localhost/api_educativa') . '/' . ltrim($url, '/');
+            $url = Config::env('APP_URL') . '/' . ltrim($url, '/');
         }
+
         header("Location: {$url}");
         exit;
     }
-    
+
+    /**
+     * Guardar mensaje de éxito en sesión
+     */
+    protected function success(string $message): void
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        $_SESSION['success'] = $message;
+    }
+
     /**
      * Respuesta JSON
      */
-    public function json(array $data, int $status = 200): void {
+    public function json(array $data, int $status = 200): void
+    {
         header('Content-Type: application/json');
         http_response_code($status);
         echo json_encode($data);
         exit;
     }
-    
-    /**
-     * Manejar errores
-     */
-    public function error(string $message, int $code = 400): void {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            $_SESSION['error'] = $message;
+
+
+    protected function error(string $message): void
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
         }
-        $referer = $_SERVER['HTTP_REFERER'] ?? ((defined('APP_URL') ? APP_URL : '') . '/?page=home');
-        header("Location: {$referer}");
-        exit;
+
+        $_SESSION['error'] = $message;
     }
-    
-    /**
-     * Mensaje de éxito
-     */
-    public function success(string $message): void {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            $_SESSION['success'] = $message;
+
+    protected function warning(string $message): void
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
         }
+
+        $_SESSION['warning'] = $message;
     }
 }

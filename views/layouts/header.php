@@ -1,8 +1,5 @@
 <?php
 // views/layouts/header.php
-// Header con rutas seguras para assets
-
-// Asegurar que APP_URL esté definido
 if (!defined('APP_URL')) {
     $configPath = __DIR__ . '/../../config/config.php';
     if (file_exists($configPath)) {
@@ -31,8 +28,9 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($title ?? 'Centro Educativo ISW-306'); ?></title>
-    <!-- ✅ Ruta corregida para CSS -->
-    <link rel="stylesheet" href="<?php echo $ruta_base; ?>/assets/css/styles.css">
+    <!-- Estilos generales de la aplicación -->
+    <!-- <link rel="stylesheet" href="<?php echo $ruta_base; ?>/assets/css/styles.css"> -->
+    <link rel="stylesheet" href="<?= Config::env('APP_URL') ?>/assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -80,7 +78,7 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
         </div>
     </header>
 
-    <!-- Mensajes de sesión (solo si la sesión está activa) -->
+    <!-- Mensajes de sesión -->
     <?php if (session_status() === PHP_SESSION_ACTIVE): ?>
         <?php if (isset($_SESSION['error']) && !empty($_SESSION['error'])): ?>
             <div class="alert alert-error">

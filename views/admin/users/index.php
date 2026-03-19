@@ -6,7 +6,7 @@
 <section class="user-management">
     <div class="page-header">
         <h1><i class="fas fa-users"></i> <?= htmlspecialchars($title) ?></h1>
-        <a href="<?= APP_URL ?>/?page=admin/users&action=create" class="btn btn-primary">
+        <a href="<?= APP_URL ?>/?page=admin/users/create" class="btn btn-primary">
             <i class="fas fa-plus"></i> Nuevo Usuario
         </a>
     </div>
@@ -89,7 +89,7 @@
                             </td>
                             <td><?= date('d/m/Y', strtotime($user['created_at'])) ?></td>
                             <td class="actions">
-                                <a href="<?= APP_URL ?>/?page=admin/users&action=edit&id=<?= $user['id'] ?>"
+                                <a href="<?= APP_URL ?>/?page=admin/users/edit&id=<?= $user['id'] ?>"
                                     class="btn-action btn-edit" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -118,7 +118,7 @@
     <?php if (($pagination['total'] ?? 1) > 1): ?>
         <div class="pagination">
             <?php for ($i = 1; $i <= $pagination['total']; $i++): ?>
-                <a href="<?= APP_URL ?>/?page=admin/users&role=<?= urlencode($role ?? '') ?>&page=<?= $i ?>"
+                <a href="<?= APP_URL ?>/?page=admin/users&role=<?= urlencode($role ?? '') ?>&search=<?= urlencode($search ?? '') ?>&p=<?= $i ?>"
                     class="page-link <?= $i === $pagination['current'] ? 'active' : '' ?>">
                     <?= $i ?>
                 </a>
@@ -143,7 +143,7 @@
                 const userId = this.dataset.id;
                 const checked = this.checked;
 
-                fetch(`<?= APP_URL ?>/index.php?page=admin/users&action=toggle-status&id=${userId}`, {
+                fetch(`<?= APP_URL ?>/?page=admin/users/toggle-status&id=${userId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

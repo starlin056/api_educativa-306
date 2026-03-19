@@ -139,20 +139,22 @@ class Auth extends Model
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['nombre'] = $user['nombre_completo'] ?? 'Usuario';
-        // @phpstan-ignore-next-line
         $_SESSION['rol'] = $user['rol_nombre'] ?? 'estudiante';
         $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
         $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $_SESSION['last_activity'] = time();
+
+        // ✅ AGREGAR ESTO: Generar token CSRF
+        $_SESSION['_token'] = bin2hex(random_bytes(32));
 
         $token = bin2hex(random_bytes(32));
         $lifetime = $this->getSessionLifetime();
         $expires = date('Y-m-d H:i:s', time() + ($lifetime * 60));
 
         $stmt = $this->db->prepare("
-            INSERT INTO sesiones (usuario_id, token, ip_address, user_agent, fecha_expiracion) 
-            VALUES (?, ?, ?, ?, ?)
-        ");
+        INSERT INTO sesiones (usuario_id, token, ip_address, user_agent, fecha_expiracion) 
+        VALUES (?, ?, ?, ?, ?)
+    ");
         $stmt->execute([
             $user['id'],
             $token,

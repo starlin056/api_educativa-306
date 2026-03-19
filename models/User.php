@@ -12,6 +12,29 @@ class User extends Model
      */
     protected $table = 'usuarios';
 
+
+
+    public function getRecentUsers()
+    {
+        $stmt = $this->db->query("
+        SELECT u.nombre_completo, u.email, r.nombre as rol, u.created_at
+        FROM usuarios u
+        JOIN roles r ON u.rol_id = r.id
+        ORDER BY u.created_at DESC
+        LIMIT 5
+    ");
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countPendingInscriptions()
+    {
+        $stmt = $this->db->query("
+        SELECT COUNT(*) FROM inscripciones WHERE estado='pendiente'
+    ");
+
+        return $stmt->fetchColumn();
+    }
     /**
      * Buscar usuario por email con información del rol
      * 
@@ -116,6 +139,16 @@ class User extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    public function countUsers()
+    {
+
+        $stmt = $this->db->query(
+            "SELECT COUNT(*) FROM {$this->table}"
+        );
+
+        return (int) $stmt->fetchColumn();
+    }
     /**
      * Buscar usuarios por término de búsqueda (nombre o email)
      * 
@@ -231,7 +264,7 @@ class User extends Model
      */
     public function toggleStatus(int $id): array
     {
-        $user = $this->findById($id);
+        $user = $this->find($id);
 
         if (!$user) {
             return ['success' => false, 'message' => 'Usuario no encontrado'];
@@ -403,6 +436,32 @@ class User extends Model
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function estudiantes()
+    {
+
+        $sql = "SELECT * FROM usuarios
+            WHERE rol_id = 3
+            AND activo = 1
+            ORDER BY nombre_completo";
+
+        $stmt = $this->db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function docentes()
+    {
+
+        $sql = "SELECT * FROM usuarios
+            WHERE rol_id = 2
+            AND activo = 1";
+
+        $stmt = $this->db->query($sql);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
