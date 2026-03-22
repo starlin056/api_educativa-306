@@ -1,5 +1,3 @@
-<?php include __DIR__ . '/../layouts/header.php'; ?>
-
 <section class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -156,5 +154,3 @@
         </div>
     </div>
 </section>
-
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
