@@ -1,14 +1,5 @@
 /**
  * Proyecto: Centro Educativo ISW-306 - Etapa 2: Interactividad
- * Estudiante: Pedro Starlin Ureña Cruz
- *
- *  JavaScript del Lado del Cliente:
- *  Validaciones en tiempo real: required, email, minLength, pattern, match
- *  Manipulación DOM: querySelector, classList, innerHTML, createElement
- *  Persistencia: localStorage para recuperar email de sesión anterior
- *  Eventos: submit (validación), blur/input (feedback), click (toggle password)
- *  Código limpio: funciones modulares, nombres descriptivos, sin duplicación
- *  Accesibilidad: aria-invalid, role="alert", focus management
  *
  * @format
  */
