@@ -22,6 +22,27 @@ class EstudianteController extends Controller
         }
     }
 
+    public function cursos()
+    {
+        if (!$this->verificarAuth(['admin', 'estudiante'])) {
+            return;
+        }
+
+        $estudiante_id = $_SESSION['user_id'];
+        
+        // Use matching variables for the cursos.php view
+        $inscripciones = $this->estudianteModel->getInscripciones($estudiante_id);
+
+        $this->with([
+            'enrollments' => $inscripciones,
+            'user' => [
+                'nombre' => $_SESSION['nombre'] ?? 'Estudiante',
+                'nombre_completo' => $_SESSION['nombre'] ?? 'Estudiante'
+            ],
+            'titulo' => 'Mis Cursos'
+        ])->view('estudiante/cursos');
+    }
+
     public function dashboard()
     {
         if (!$this->verificarAuth(['admin', 'estudiante'])) {
