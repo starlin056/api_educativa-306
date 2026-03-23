@@ -304,3 +304,39 @@
       });
   }
 })();
+
+
+// JavaScript para la función de manejar las pestañas
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+
+      tabContents.forEach(content => content.classList.remove('active'));
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+});
+
+
+//Establece la fecha actual en el header del dashboard
+function establecerFechaActual() {
+    const fechaElemento = document.getElementById('fecha-actual');
+    if (fechaElemento) {
+        const hoy = new Date();
+        const opciones = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        const fechaFormato = hoy.toLocaleDateString('es-ES', opciones);
+        const fechaCapitalizada = fechaFormato.charAt(0).toUpperCase() + fechaFormato.slice(1);
+        fechaElemento.textContent = ` ${fechaCapitalizada}`;
+    }
+}
