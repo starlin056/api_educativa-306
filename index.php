@@ -81,6 +81,15 @@ $routes = [
         'methods' => ['GET']
     ],
 
+  'vida-estudiantil' => [
+   'controller' => 'HomeController', 
+     'action' => 'vidaEstudiantil',
+     'middleware'=> null, 
+     'methods' => ['GET']
+     
+     ],
+
+
     // Auth
     'login' => [
         'controller' => 'AuthController',

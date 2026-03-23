@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
                     <li><a href="<?php echo $ruta_base; ?>/?page=home">Inicio</a></li>
                     <li><a href="<?php echo $ruta_base; ?>/?page=nosotros">Nosotros</a></li>
                     <li><a href="<?php echo $ruta_base; ?>/?page=admisiones">Admisiones</a></li>
-
+                    <li><a href="<?php echo $ruta_base; ?>/?page=vida-estudiantil">Vida Estudiantil</a></li>
 
                     <?php if ($user): ?>
                         <li>

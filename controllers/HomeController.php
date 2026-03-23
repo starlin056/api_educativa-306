@@ -69,6 +69,20 @@ class HomeController extends Controller
 
         $this->view('admisiones/index');
     }
+/*
+    |--------------------------------------------------------------------------
+    | Página Vida Estudiantil
+    |--------------------------------------------------------------------------
+    */
+   public function VidaEstudiantil() {
+
+
+ $this->with([
+            'title' => 'Vida estudiantil - Centro Educativo'
+        ]);
+
+    $this->view('VidaEstudiantil/index');
+}
 
     /*
     |--------------------------------------------------------------------------
