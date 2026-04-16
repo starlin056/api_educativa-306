@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@modelcontextprotocol/server-filesystem": "^2026.1.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/styles.css",
+    "watch:css": "tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/styles.css --watch"
+  }
+}

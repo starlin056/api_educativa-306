@@ -32,71 +32,138 @@
 | Luis Manuel Cabrera                | 100067787 |
 | Leodis Reynaldo Rodríguez Calderón | 100063024 |
 
+Participación en el Desarrollo
+
+El desarrollo del sistema fue realizado de manera colaborativa utilizando control de versiones con Git.
+
+Las contribuciones individuales pueden ser verificadas en el historial del repositorio en GitHub, donde se reflejan los commits, cambios y mejoras realizadas durante el desarrollo del proyecto.
+
+Cada integrante participó en distintas áreas como:
+
+Desarrollo de vistas (interfaz gráfica)
+Implementación de controladores
+Modelado de base de datos
+Integración de funcionalidades
+Pruebas del sistema
+
 ---
 
 ## Descripción del Proyecto
 
-El **Centro Educativo Digital** es una aplicación web orientada a la gestión integral de un centro educativo, desarrollada como proyecto integrador de la asignatura ISW-306.
+El **Centro Educativo Digital** es una aplicación web orientada a la gestión integral de un centro educativo.
 
-La implementación actual cubre la estructura base del sistema utilizando **HTML5, CSS3 y PHP**, organizados bajo el patrón de arquitectura **Modelo–Vista–Controlador (MVC)**, proporcionando una base sólida, escalable y preparada para futuras integraciones con backend y base de datos.
+El sistema permite administrar usuarios, servicios, aulas y procesos académicos mediante una arquitectura organizada y escalable basada en el patrón **Modelo–Vista–Controlador (MVC)**, utilizando **PHP, MySQL, JavaScript y Tailwind CSS**.
 
 ---
 
 ## Objetivo General
 
-Desarrollar la estructura base de la aplicación web mediante una interfaz visual funcional, utilizando HTML5 semántico, CSS externo y PHP, estableciendo los cimientos para integraciones posteriores con backend y base de datos bajo una arquitectura escalable.
+Desarrollar una aplicación web funcional para la gestión educativa, implementando una arquitectura escalable con integración de frontend moderno y backend estructurado.
 
 ---
 
 ## Objetivos Específicos
 
-- Aplicar estructura semántica con etiquetas HTML5 para garantizar accesibilidad y correcta organización del contenido.
-- Diseñar e implementar la interfaz visual usando CSS externo, respetando los colores institucionales del centro educativo.
-- Incorporar diseño responsive mediante Flexbox y Media Queries para compatibilidad con múltiples dispositivos.
-- Organizar el proyecto bajo el patrón MVC, separando lógica de negocio, presentación y gestión de datos.
-- Implementar formularios funcionales (login, registro y navegación) preparados para integración con backend.
+- Implementar arquitectura MVC separando lógica, vistas y datos.
+- Diseñar interfaz moderna y responsive utilizando Tailwind CSS.
+- Desarrollar sistema de autenticación con manejo de roles.
+- Integrar base de datos relacional con MySQL.
+- Implementar seguridad mediante CSRF y hash de contraseñas.
+- Preparar el sistema para despliegue en servidor web.
 
 ---
 
 ## Implementaciones
 
-- **Estructura MVC:** organización completa en controladores, vistas, layouts y modelos.
-- **Ruteo básico:** `index.php` como punto de entrada para gestionar la carga y navegación entre vistas.
-- **Vistas implementadas:** `home`, `login`, `register`, `nosotros`, dashboards de Admin, Docente y Estudiante, panel de servicios, admisiones y manejo de errores 404.
-- **Diseño responsive:** CSS3, Flexbox y Media Queries para interfaz adaptable a múltiples dispositivos.
-- **Configuración del sistema:** archivos de configuración base (entorno, constantes, rutas) y gestión de sesiones.
-- **Seguridad de credenciales:** hash de contraseñas con `password_hash` / `password_verify`.
-- **Middleware:** autenticación (`AuthMiddleware.php`) y protección CSRF (`Csrf.php`).
-- **Flujo de autenticación y roles:** lógica inicial para inicio de sesión y redirección por rol hacia los dashboards correspondientes (Administrador, Docente, Estudiante).
-- **Base de datos:** diseño del esquema SQL inicial (`schema.sql`) para integración en la siguiente etapa.
-- **Dashboard de Administración:** panel funcional para administrar usuarios y servicios, siendo el usuario Root del sistema.
+- Arquitectura MVC completamente estructurada.
+- Sistema de autenticación con roles:
+  - Administrador
+  - Docente
+  - Estudiante
+
+- Middleware de seguridad:
+  - Autenticación (`AuthMiddleware`)
+  - Protección CSRF
+
+- CRUD de:
+  - Usuarios
+  - Servicios
+- Dashboards por rol
+- Sistema de rutas centralizado (`index.php`)
+- Integración con base de datos MySQL
+- Uso de Tailwind CSS para estilos modernos
+- Diseño responsive adaptable a múltiples dispositivos
 
 ---
 
-## Arquitectura del Sistema
+## Base de Datos y Migraciones
 
-El proyecto implementa el patrón **Modelo–Vista–Controlador (MVC)**:
+El sistema cuenta con un esquema SQL inicial (`schema.sql`) que define la estructura de la base de datos.
 
-| Capa            | Responsabilidad                      | Estado                           |
-| --------------- | ------------------------------------ | -------------------------------- |
-| **Modelo**      | Gestión de datos y lógica de negocio | Base implementada, en expansión  |
-| **Vista**       | Interfaz visual del sistema          | Vistas principales implementadas |
-| **Controlador** | Lógica de navegación y flujo         | Base implementada, en expansión  |
+### Tablas principales:
+
+- `users` → gestión de usuarios y roles
+- `services` → servicios ofrecidos
+- `estudiantes` → información académica
+- `aulas` → gestión de clases
+- `inscripciones` → relación estudiante–aula
+
+### Características implementadas:
+
+- Relaciones entre tablas (claves foráneas)
+- Normalización básica
+- Preparado para escalabilidad
+- Compatible con MySQL
 
 ---
 
-## Tecnologías Utilizadas
+## Integración de Tailwind CSS
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+Se implementó Tailwind CSS mediante CLI para optimizar el flujo de estilos.
 
-- HTML5 semántico
-- CSS3 + Flexbox + Media Queries
-- PHP (MVC)
-- JavaScript
-- MySQL (esquema preparado)
+### Instalación
+
+```bash
+npm install -D tailwindcss @tailwindcss/cli postcss autoprefixer
+```
+
+### Archivo de entrada
+
+`assets/css/tailwind.css`
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './custom.css';
+```
+
+### Compilación
+
+```bash
+npx @tailwindcss/cli -i ./assets/css/tailwind.css -o ./assets/css/styles.css --watch
+```
+
+### Configuración
+
+`tailwind.config.js`
+
+```js
+module.exports = {
+  content: ['./views/**/*.php', './index.php'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+### Resultado
+
+- Se genera `styles.css` con:
+  - Utilidades de Tailwind
+  - Estilos personalizados
 
 ---
 
@@ -105,19 +172,18 @@ El proyecto implementa el patrón **Modelo–Vista–Controlador (MVC)**:
 ```
 api_educativa/
 │
-├── .env
-├── home.jpeg
-├── index.php                          # Punto de entrada / Router principal
+├── index.php
 ├── README.md
+├── .env
 │
 ├── assets/
 │   ├── css/
+│   │   ├── tailwind.css
+│   │   ├── custom.css
 │   │   └── styles.css
-│   ├── img/
-│   │   ├── fondo-escuela.jpg
-│   │   └── logo.png
-│   └── js/
-│       └── app.js
+│   ├── js/
+│   │   └── app.js
+│   └── img/
 │
 ├── config/
 │   ├── config.php
@@ -126,117 +192,94 @@ api_educativa/
 ├── controllers/
 │   ├── AdminController.php
 │   ├── AuthController.php
-│   ├── Controller.php
 │   ├── DocenteController.php
 │   ├── EstudianteController.php
-│   ├── HomeController.php
 │   ├── ServiceController.php
 │   └── UserController.php
 │
-├── database/
-│   ├── estru-database.png
-│   └── schema.sql
-│
+├── models/
+│   ├── User.php
+│   ├── Service.php
+│   ├── Estudiante.php
+│   ├── Aula.php
+│   ├── Inscripcion.php
 │
 ├── middleware/
 │   ├── AuthMiddleware.php
 │   └── Csrf.php
 │
-├── models/
-│   ├── Aula.php
-│   ├── Auth.php
-│   ├── Estudiante.php
-│   ├── Inscripcion.php
-│   ├── Model.php
-│   ├── Service.php
-│   └── User.php
-│
-├── Imagenes de capturas del proyecto/
-│   ├── contraseña.jpeg
-│   ├── docente panel.png
-│   ├── home.jpeg
-│   ├── js.jpeg
-│   ├── Panel de Administración.jpeg
-│   └── Panel del Estudiante.jpeg
+├── database/
+│   └── schema.sql
 │
 └── views/
     ├── admin/
-    │   ├── dashboard.php
-    │   ├── services/
-    │   │   ├── create.php
-    │   │   ├── edit.php
-    │   │   └── index.php
-    │   └── users/
-    │       ├── form.php
-    │       └── index.php
-    ├── Admisiones/
-    │   └── index.php
     ├── docente/
-    │   ├── aula.php
-    │   └── dashboard.php
-    ├── errors/
-    │   └── 404.php
     ├── estudiante/
-    │   └── dashboard.php
-    ├── home/
-    │   └── home.php
-    ├── layouts/
-    │   ├── footer.php
-    │   └── header.php
     ├── login/
-    │   ├── login.php
-    │   └── register.php
+    ├── home/
+    ├── layouts/
+    ├── errores/
     └── nosotros/
-        └── index.php
 ```
 
 ---
 
 ## Funcionalidades Implementadas
 
-- Router principal mediante `index.php`
-- Página principal institucional (`home`)
-- Formulario de login
-- Formulario de registro
-- Página Nosotros
-- Dashboard de Administrador (CRUD usuarios y servicios)
-- Dashboard de Docente (gestión de aula)
-- Dashboard de Estudiante
-- Panel de Admisiones
-- Middleware de autenticación y protección CSRF
-- Manejo de errores (404)
-- Layout reutilizable (header / footer)
-- Diseño responsive
+- Sistema de login y registro
+- Control de acceso por roles
+- Dashboard de administrador
+- Gestión de usuarios y servicios
+- Panel docente (aula)
+- Panel estudiante
+- Módulo de admisiones
+- Manejo de errores 404
+- Protección CSRF
+- Layout reutilizable
+- Interfaz moderna con Tailwind
 
 ---
 
 ## Diseño Responsive
 
-Compatible con:
-
 | Dispositivo          | Soporte |
 | -------------------- | ------- |
-| Computadoras         | ✅      |
-| Dispositivos móviles | ✅      |
-| Tablets              | ✅      |
+| Computadoras         | Sí      |
+| Dispositivos móviles | Sí      |
+| Tablets              | Sí      |
 
 ---
 
 ## Instalación
 
-**1. Clonar el repositorio**
+### 1. Clonar repositorio
 
 ```bash
 git clone https://github.com/usuario/centro-educativo-digital.git
 ```
 
-**2. Colocar el proyecto en el servidor local**
+### 2. Ubicar en XAMPP
 
 ```
-xampp/htdocs/api_educativa
+C:\xampp\htdocs\api_educativa
 ```
 
-**3. Ejecutar en el navegador**
+### 3. Configurar base de datos
+
+- Crear base de datos en MySQL
+- Importar archivo:
+
+```
+database/schema.sql
+```
+
+### 4. Ejecutar Tailwind
+
+```bash
+npx @tailwindcss/cli -i ./assets/css/tailwind.css -o ./assets/css/styles.css --watch
+```
+
+### 5. Ejecutar en navegador
 
 ```
 http://localhost/api_educativa
@@ -246,29 +289,38 @@ http://localhost/api_educativa
 
 ## Plan de Desarrollo
 
-| Etapa   | Descripción                                 | Estado          |
-| ------- | ------------------------------------------- | --------------- |
-| Etapa 1 | Estructura MVC + Interfaz visual + PHP base | ✅ Completada   |
-| Etapa 2 | Implementación de JavaScript                | ✅ Completada   |
-| Etapa 3 | Implementación de PHP y MySQL               | ✅ Completada   |
-| Etapa 4 | Despliegue en servidor web                  | ⏳ Pendiente    |
+| Etapa   | Descripción                 | Estado                 |
+| ------- | --------------------------- | ---------------------- |
+| Etapa 1 | Estructura MVC + UI         | Completada             |
+| Etapa 2 | Integración JavaScript      | Completada             |
+| Etapa 3 | Backend + MySQL + Seguridad | Completada             |
+| Etapa 4 | Despliegue                  | Pendiente / solo local |
 
 ---
 
 ## Estado Actual
 
-> **Etapa 3 completada.** El sistema cuenta con arquitectura MVC, interfaz visual funcional, formularios listos para backend, dashboards por rol y diseño adaptable.
+El sistema se encuentra funcional con:
+
+- Arquitectura MVC completa
+- Backend conectado a base de datos
+- Autenticación con roles
+- Interfaz moderna con Tailwind
+- CRUD operativos
 
 ---
 
 ## Licencia
 
-Proyecto desarrollado con fines académicos.
-Uso exclusivo para la asignatura **Desarrollo de Aplicaciones Web ISW-306 — UAPA**.
-Prohibida su distribución comercial.
+Proyecto desarrollado con fines académicos para la asignatura:
+
+**Desarrollo de Aplicaciones Web ISW-306 — UAPA**
 
 ---
 
 ## Autor Principal del Repositorio
 
-**Pedro Starlin Ureña Cruz** — 100063671
+**Pedro Starlin Ureña Cruz**
+Matrícula: 100063671
+
+---

@@ -30,7 +30,10 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
     <title><?php echo htmlspecialchars($title ?? 'Centro Educativo ISW-306'); ?></title>
     <!-- Estilos generales de la aplicación -->
     <!-- <link rel="stylesheet" href="<?php echo $ruta_base; ?>/assets/css/styles.css"> -->
-    <link rel="stylesheet" href="<?= Config::env('APP_URL') ?>/assets/css/styles.css">
+    <link href="/api_educativa/assets/css/styles.css" rel="stylesheet">
+
+    <link href="/api_educativa/assets/css/styles.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
