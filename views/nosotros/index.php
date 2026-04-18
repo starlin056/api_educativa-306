@@ -81,24 +81,8 @@
 
     </main>
 
-    <script>
-        // JavaScript para la función de manejar las pestañas
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        });
-    </script>
+    <!-- Llamada a la función de inicialización -->
+    <script src="<?= APP_URL ?>/assets/js/app.js"></script>
 
 </body>
 
