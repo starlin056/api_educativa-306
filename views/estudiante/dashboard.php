@@ -24,6 +24,10 @@
             <h3><?= $pendientes ?></h3>
             <p>Pendientes de Aprobación</p>
         </div>
+        <button class="navbar-item active" data-menu="cursos" onclick="window.location.href='<?= APP_URL ?>/?page=cursos'; return false;">
+            <i class="fas fa-book"></i>
+            <span>Mis cursos</span>
+        </button>
     </div>
 
     <div class="row">

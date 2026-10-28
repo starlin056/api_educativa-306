@@ -249,6 +249,13 @@ $routes = [
         'middleware' => null,
         'methods' => ['GET']
     ],
+    
+    'cursos' => [
+        'controller' => 'EstudianteController',
+        'action' => 'cursos',
+        'middleware' => fn() => AuthMiddleware::requireRole(['admin', 'estudiante']),
+        'methods' => ['GET']
+    ],
 
 
     // Gestión de Aulas Docente
